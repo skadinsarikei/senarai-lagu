@@ -278,7 +278,7 @@ footer {
 
 <main id="content">
   <div class="school-grid" id="school-grid"></div>
-  <footer>Pertandingan Tarian & Nyanyian Duo/Duet BM & BI &middot; 2026</footer>
+  <footer>Majlis Sukan Sekolah Sarawak &middot; 2026</footer>
 </main>
 
 <div id="player-bar">
@@ -342,10 +342,25 @@ schools.forEach(school => {
   const body = document.createElement("div");
   body.className = "card-body";
 
+  const checkPromises = [];
+
   trackTypes.forEach(t => {
     const btn = document.createElement("button");
-    btn.className = "track-btn";
+    btn.className = "track-btn checking";
     btn.innerHTML = `<span class="track-icon">${iconPlay}</span><span class="track-label">${t.label}</span>`;
+
+    const src = `${AUDIO_BASE}${school.slug}-${t.file}.mp3`;
+
+    // Auto-detect: semak kewujudan fail sebelum papar butang.
+    // Guna fetch HEAD; jika gagal/404, sembunyikan butang terus.
+    const p = fetch(src, { method: "HEAD" })
+      .then(res => {
+        if (!res.ok) { btn.remove(); }
+        else { btn.classList.remove("checking"); }
+      })
+      .catch(() => { btn.remove(); });
+    checkPromises.push(p);
+
     btn.addEventListener("click", () => {
       const src = `${AUDIO_BASE}${school.slug}-${t.file}.mp3`;
       if (activeBtn === btn && !audioEl.paused) {
@@ -371,6 +386,11 @@ schools.forEach(school => {
 
   card.appendChild(body);
   grid.appendChild(card);
+
+  // Jika ketiga-tiga lagu untuk sekolah ini tiada, sembunyikan keseluruhan kad.
+  Promise.allSettled(checkPromises).then(() => {
+    if (body.children.length === 0) card.remove();
+  });
 });
 
 audioEl.addEventListener("pause", () => {
