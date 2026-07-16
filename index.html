@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lagu Tarian &amp; Nyanyian — Sekolah</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --blue-700: #1d4ed8;
+  --blue-600: #2563eb;
+  --blue-100: #dbeafe;
+  --blue-50:  #eff6ff;
+
+  --slate-900: #0f172a;
+  --slate-700: #334155;
+  --slate-600: #475569;
+  --slate-500: #64748b;
+  --slate-300: #cbd5e1;
+  --slate-200: #e2e8f0;
+  --slate-100: #f1f5f9;
+  --slate-50:  #f8fafc;
+  --white:     #ffffff;
+
+  --green:  #16a34a; --green-bg: #f0fdf4; --green-border: #86efac;
+
+  --radius:    8px;
+  --radius-lg: 12px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+  --transition: 150ms cubic-bezier(.4,0,.2,1);
+  --focus-ring: 0 0 0 3px rgba(37,99,235,.45);
+}
+
+html { font-size: 14px; }
+body {
+  font-family: 'Poppins', sans-serif;
+  background: var(--slate-50);
+  color: var(--slate-900);
+  min-height: 100vh;
+  padding-bottom: 84px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+a:focus-visible, button:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--slate-300); border-radius: 99px; }
+
+#topbar {
+  background: var(--white);
+  border-bottom: 1px solid var(--slate-200);
+  padding: 14px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  box-shadow: var(--shadow-sm);
+}
+.topbar-title {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--slate-900);
+}
+.topbar-sub {
+  font-size: 12.5px;
+  color: var(--slate-500);
+  font-weight: 600;
+  letter-spacing: .03em;
+}
+
+#content {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 20px 16px 20px;
+}
+
+.school-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+@media (max-width: 640px) {
+  .school-grid { grid-template-columns: 1fr; }
+}
+
+.card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--slate-200);
+  overflow: hidden;
+  transition: box-shadow var(--transition), transform var(--transition);
+}
+.card:hover { box-shadow: 0 4px 12px rgba(0,0,0,.08); }
+
+.card-header {
+  padding: 12px 16px;
+  background: var(--slate-900);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.card-header img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: contain;
+  background: var(--white);
+  padding: 2px;
+  flex-shrink: 0;
+}
+.card-title {
+  font-weight: 600;
+  font-size: 13.5px;
+  color: #fff;
+  letter-spacing: .01em;
+  line-height: 1.25;
+}
+
+.card-body {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.track-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  border: 1.5px solid var(--slate-200);
+  background: var(--slate-50);
+  border-radius: var(--radius);
+  padding: 9px 12px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--slate-700);
+  cursor: pointer;
+  transition: background var(--transition), border-color var(--transition), color var(--transition);
+  text-align: left;
+}
+.track-btn:hover {
+  background: var(--blue-50);
+  border-color: var(--blue-100);
+}
+.track-btn.playing {
+  background: var(--green-bg);
+  border-color: var(--green-border);
+  color: var(--green);
+  font-weight: 600;
+}
+.track-icon {
+  flex-shrink: 0;
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.track-btn.playing .track-icon {
+  background: var(--green);
+  border-color: var(--green);
+}
+.track-icon svg { width: 12px; height: 12px; }
+.track-btn:not(.playing) .track-icon svg { fill: var(--slate-600); }
+.track-btn.playing .track-icon svg { fill: #fff; }
+
+.track-label { flex: 1; min-width: 0; }
+
+/* ══════════════ PLAYER TETAP DI BAWAH ══════════════ */
+#player-bar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  background: var(--white);
+  border-top: 1px solid var(--slate-200);
+  box-shadow: 0 -4px 12px rgba(0,0,0,.08);
+  padding: 10px 16px;
+  z-index: 50;
+  transform: translateY(100%);
+  transition: transform 220ms cubic-bezier(.4,0,.2,1);
+}
+#player-bar.active { transform: translateY(0); }
+
+.player-inner {
+  max-width: 780px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.player-icon {
+  flex-shrink: 0;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--green-bg);
+  border: 1.5px solid var(--green-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.player-icon svg { width: 15px; height: 15px; fill: var(--green); }
+.player-info { flex: 1; min-width: 0; line-height: 1.25; }
+.player-info .p-school {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--slate-900);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.player-info .p-track {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--slate-500);
+}
+#audio-el { flex-shrink: 0; height: 34px; max-width: 220px; }
+@media (max-width: 480px) {
+  #audio-el { max-width: 130px; }
+}
+#close-player {
+  flex-shrink: 0;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--slate-200);
+  background: var(--slate-50);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--slate-500);
+  font-size: 14px;
+}
+#close-player:hover { background: var(--slate-100); }
+
+footer {
+  text-align: center;
+  font-size: 11.5px;
+  color: var(--slate-500);
+  padding: 8px 0 12px;
+}
+
+@media (max-width: 420px) {
+  .topbar-title { font-size: 16px; }
+}
+</style>
+</head>
+<body>
+
+<header id="topbar">
+  <div class="topbar-title">Lagu Tarian &amp; Nyanyian Sekolah</div>
+  <div class="topbar-sub">TARIAN · NYANYIAN BM · NYANYIAN BI</div>
+</header>
+
+<main id="content">
+  <div class="school-grid" id="school-grid"></div>
+  <footer>Pertandingan Tarian & Nyanyian Duo/Duet BM & BI &middot; 2026</footer>
+</main>
+
+<div id="player-bar">
+  <div class="player-inner">
+    <div class="player-icon">
+      <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+    </div>
+    <div class="player-info">
+      <div class="p-school" id="p-school">—</div>
+      <div class="p-track" id="p-track">—</div>
+    </div>
+    <audio id="audio-el" controls autoplay></audio>
+    <button id="close-player" aria-label="Tutup pemain">✕</button>
+  </div>
+</div>
+
+<script>
+// ── Konfigurasi sekolah: slug digunakan untuk nama fail audio rata ──
+// Corak nama fail: /audio/{slug}-tarian.mp3, {slug}-nyanyian-bm.mp3, {slug}-nyanyian-bi.mp3
+const AUDIO_BASE = "audio/"; // laraskan path ini mengikut struktur repo GitHub anda
+
+const schools = [
+  { name: "SK Adin",            slug: "skadin",           logo: "https://i.postimg.cc/NfQP1jhZ/skadin.png" },
+  { name: "SK Assun",           slug: "skassun",          logo: "https://i.postimg.cc/dtJS8VPM/skassun.png" },
+  { name: "SK Bukit Kinyau",    slug: "skbukitkinyau",    logo: "https://i.postimg.cc/7YqQgZ8r/skbukitkinyau.png" },
+  { name: "SK Muara Payang",    slug: "skmuarapayang",    logo: "https://i.postimg.cc/TYTHr3MM/skmuarapayang.png" },
+  { name: "SK Penghulu Andin",  slug: "skpenghuluandin",  logo: "https://i.postimg.cc/4NXFzxkT/skpenghuluandin.png" },
+  { name: "SK Sg Paoh",         slug: "sksgpaoh",         logo: "https://i.postimg.cc/7YqQgZ8k/sksgpaoh.png" },
+  { name: "SK Sg Sentubu",      slug: "sksgsentubu",      logo: "https://i.postimg.cc/VLzHjkQw/sksgsentubu.png" },
+  { name: "SK St Andrew",       slug: "skstandrew",       logo: "https://i.postimg.cc/CLw6jxTY/skstandrew.png" },
+  { name: "SK Udin",            slug: "skudin",           logo: "https://i.postimg.cc/wT9bhj8g/skudin.png" },
+];
+
+const trackTypes = [
+  { key: "tarian",      label: "Tarian",       file: "tarian" },
+  { key: "nyanyian-bm", label: "Nyanyian BM",  file: "nyanyian-bm" },
+  { key: "nyanyian-bi", label: "Nyanyian BI",  file: "nyanyian-bi" },
+];
+
+const iconPlay = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+const iconPause = '<svg viewBox="0 0 24 24"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>';
+
+const grid = document.getElementById("school-grid");
+const audioEl = document.getElementById("audio-el");
+const playerBar = document.getElementById("player-bar");
+const pSchool = document.getElementById("p-school");
+const pTrack = document.getElementById("p-track");
+const closeBtn = document.getElementById("close-player");
+
+let activeBtn = null;
+
+schools.forEach(school => {
+  const card = document.createElement("section");
+  card.className = "card";
+
+  const header = document.createElement("div");
+  header.className = "card-header";
+  header.innerHTML = `<img src="${school.logo}" alt="${school.name}" onerror="this.style.display='none'"><span class="card-title">${school.name}</span>`;
+  card.appendChild(header);
+
+  const body = document.createElement("div");
+  body.className = "card-body";
+
+  trackTypes.forEach(t => {
+    const btn = document.createElement("button");
+    btn.className = "track-btn";
+    btn.innerHTML = `<span class="track-icon">${iconPlay}</span><span class="track-label">${t.label}</span>`;
+    btn.addEventListener("click", () => {
+      const src = `${AUDIO_BASE}${school.slug}-${t.file}.mp3`;
+      if (activeBtn === btn && !audioEl.paused) {
+        audioEl.pause();
+        return;
+      }
+      audioEl.src = src;
+      audioEl.play().catch(() => {});
+      pSchool.textContent = school.name;
+      pTrack.textContent = t.label;
+      playerBar.classList.add("active");
+
+      if (activeBtn && activeBtn !== btn) {
+        activeBtn.classList.remove("playing");
+        activeBtn.querySelector(".track-icon").innerHTML = iconPlay;
+      }
+      activeBtn = btn;
+      btn.classList.add("playing");
+      btn.querySelector(".track-icon").innerHTML = iconPause;
+    });
+    body.appendChild(btn);
+  });
+
+  card.appendChild(body);
+  grid.appendChild(card);
+});
+
+audioEl.addEventListener("pause", () => {
+  if (activeBtn) {
+    activeBtn.classList.remove("playing");
+    activeBtn.querySelector(".track-icon").innerHTML = iconPlay;
+  }
+});
+audioEl.addEventListener("play", () => {
+  if (activeBtn) {
+    activeBtn.classList.add("playing");
+    activeBtn.querySelector(".track-icon").innerHTML = iconPause;
+  }
+});
+audioEl.addEventListener("ended", () => {
+  if (activeBtn) {
+    activeBtn.classList.remove("playing");
+    activeBtn.querySelector(".track-icon").innerHTML = iconPlay;
+  }
+});
+
+closeBtn.addEventListener("click", () => {
+  audioEl.pause();
+  audioEl.removeAttribute("src");
+  audioEl.load();
+  playerBar.classList.remove("active");
+  if (activeBtn) {
+    activeBtn.classList.remove("playing");
+    activeBtn.querySelector(".track-icon").innerHTML = iconPlay;
+    activeBtn = null;
+  }
+});
+</script>
+
+</body>
+</html>
